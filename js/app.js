@@ -1,6 +1,13 @@
 var ViewModel = function() {
     this.clickCount = ko.observable(0);
-    this.name = ko.observable('Tabby');
+    //this.name = ko.observable('Tabby');
+    this.cats = ko.observableArray([
+      { name: 'Kitty' },
+      { name: 'Kit-teacup'},
+      { name: 'Kittin around'},
+      { name: 'Kittles'},
+      { name: 'Kitty Kitty'}
+    ]);
     this.imgSrc = ko.observable('img/434164568_fea0ad4013_z.jpg');
     this.imgAttribution = ko.observable('www.flickr.com');
 
@@ -8,22 +15,20 @@ var ViewModel = function() {
       this.clickCount(this.clickCount() + 1);
     };
 
-  /*  this.catLevelName = ko.observableArray([
-      {catLevel: "Small"},
-      {catLevel: "Medium"},
-      {catLevel: "Big"}
-    ]);
-*/
-    //this.catLevel = ko.observable();
     this.catLevel = ko.computed(function() {
       if (this.clickCount() <= 10) {
-        return "small";
+        return "Click level: Small";
       } else if (this.clickCount() >= 11 && this.clickCount() <= 20) {
-        return "medium";
+        return "Click level: Medium";
       } else {
-        return "Big";
+        return "Click level: Big";
       }
     }, this);
+
+
+    this.addCat = function() {
+      self.cats.push({ name });
+    }
 
 }
 
