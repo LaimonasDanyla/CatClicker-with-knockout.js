@@ -1,3 +1,41 @@
+var initialCats = [
+  {
+    clickCount : 0,
+    name : 'Tabby',
+    imgSrc : 'img/434164568_fea0ad4013_z.jpg',
+    imgAttribution : 'www.flickr.com/photos/bigtallguy/434164568',
+    nickNames : ['Kitty', 'Kit-teacup', 'Kittin around', 'Kittles', 'Kitty Kitty']
+  },
+  {
+    clickCount : 0,
+    name : 'Tiger',
+    imgSrc : 'img/4154543904_6e2428c421_z.jpg',
+    imgAttribution : 'www.flickr.com/photos/xshamx/4154543904',
+    nickNames : ['Tigger']
+  },
+  {
+    clickCount : 0,
+    name : 'Scaredy',
+    imgSrc : 'img/22252709_010df3379e_z.jpg',
+    imgAttribution : 'www.flickr.com/photos/kpjas/22252709',
+    nickNames : ['Casper']
+  },
+  {
+    clickCount : 0,
+    name : 'Shadow',
+    imgSrc : 'img/1413379559_412a540d29_z.jpg',
+    imgAttribution : 'www.flickr.com/photos/malfet/1413379559',
+    nickNames : ['Shooby']
+  },
+  {
+    clickCount : 0,
+    name : 'Sleepy',
+    imgSrc : 'img/9648464288_2516b35537_z.jpg',
+    imgAttribution : 'www.flickr.com/photos/onesharp/9648464288',
+    nickNames: ['Zzzzz']
+  }
+];
+
 var Cat = function(data) {
   this.clickCount = ko.observable(data.clickCount);
   this.name = ko.observable(data.name);
@@ -38,13 +76,25 @@ var ViewModel = function() {
 var ViewModel = function() {
   var self = this; // this is a trick to access inner this and not to confuse
   // with outer this.
-  this.currentCat = ko.observable( new Cat({
-    clickCount: 0,
-    name: 'Tabby',
-    imgSrc: 'img/434164568_fea0ad4013_z.jpg',
-    imgAttribution: 'www.flickr.com/photos/bigtallguy/434164568',
-    nickNames: ['Kitty', 'Kit-teacup', 'Kittin around', 'Kittles', 'Kitty Kitty']
-  }) );
+
+  // make observable array for the initial cats, but not passing in yet
+  this.catList = ko.observableArray([]);
+
+  //loop over all initialCats, and for each cats, put in to the catList
+
+  initialCats.forEach(function(catItem){
+    // pass in each of the catItem, not object literal as previously
+    self.catList.push( new Cat(catItem) );
+    //self. cat list is used, not this, in order not to confuse where this
+    // function is mapping to. SELF is always gonna map to ViewModel.
+    //So self.catList will map to this.catList = ko.observableArray([]).
+  })
+
+  //changed currentCat - in this way it will not create a new cat here,
+  // it is done by forEach function above
+  // we need to access the 0th elemnet in the catList (first cat)
+  this.currentCat = ko.observable( this.catList()[0] );
+
   this.incrementCounter = function() {
     self.currentCat().clickCount(self.currentCat().clickCount() + 1);
   }
