@@ -23,12 +23,26 @@ var Cat = function() {
 //this was causing trouble - bindings are applied via ViewModel
 //ko.applyBindings(new Cat());
 
-
+// --------- one way of making ViewModel---------
+/*
 var ViewModel = function() {
   this.currentCat = ko.observable ( new Cat() );
   this.incrementCounter = function() {
-      this.currentCat().clickCount(this.currentCat().clickCount() + 1);
+    //it is not needed anymore to use currentCat() anymore, because using WITH
+    //this. represents the currentCat() binding context.
+      this.clickCount(this.clickCount() + 1);
     };
-}
+  */
+// --------anothe way to make ViewModel is with biding is used: --------
+// pay attention how outer this is storred to
+var ViewModel = function() {
+  var self = this; // this is a trick to access inner this and not to confuse
+  // with outer this.
+  this.currentCat = ko.observable( new Cat() ); // outer this
+  this.incrementCounter = function() {
+    self.currentCat().clickCount(self.currentCat().clickCount() + 1);
+  }
+};
+
 
 ko.applyBindings(new ViewModel());
