@@ -88,7 +88,7 @@ var ViewModel = function() {
     //self. cat list is used, not this, in order not to confuse where this
     // function is mapping to. SELF is always gonna map to ViewModel.
     //So self.catList will map to this.catList = ko.observableArray([]).
-  })
+  });
 
   //changed currentCat - in this way it will not create a new cat here,
   // it is done by forEach function above
@@ -97,7 +97,20 @@ var ViewModel = function() {
 
   this.incrementCounter = function() {
     self.currentCat().clickCount(self.currentCat().clickCount() + 1);
+  };
+
+  //a  function this.setCat = function() {}; will not work, becasue it will work within that <ul>
+  //binding context. We need to get uo outside that binding context.
+  //in index.html add $parent.setCat
+  this.setCat = function(clickedCat) {
+    console.log('hi'); // test if binding is wokring.
+    //updating currentCat. access with self = inside ViewModel
+    //whne clicked (check docs) it passes in the object which is clicked
+    //so when setCat gets run, clickedCat model is passed in.
+    // so we set the currentCat to the clickedCat
+    self.currentCat(clickedCat);
   }
+
 };
 
 
